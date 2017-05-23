@@ -62,7 +62,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
             this.ucPagerEx1 = new Utilities.UserControls.UcPagerEx();
-            this.dgvData = new RowMergeView();
+            this.dgvData = new System.Windows.Forms.DataGridView();
             this.coliD = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colroutename = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colsendorder = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -70,6 +70,7 @@
             this.colisprinted = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colaction = new System.Windows.Forms.DataGridViewButtonColumn();
             this.sendOrderBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sendOrderBindingSource)).BeginInit();
@@ -213,6 +214,7 @@
             this.ddlPrintType.Name = "ddlPrintType";
             this.ddlPrintType.Size = new System.Drawing.Size(131, 32);
             this.ddlPrintType.TabIndex = 35;
+            this.ddlPrintType.SelectedIndexChanged += new System.EventHandler(this.ddlPrintType_SelectedIndexChanged);
             // 
             // label21
             // 
@@ -228,7 +230,7 @@
             this.ddlAutoPrint.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlAutoPrint.Font = new System.Drawing.Font("宋体", 18F);
             this.ddlAutoPrint.FormattingEnabled = true;
-            this.ddlAutoPrint.Location = new System.Drawing.Point(337, 131);
+            this.ddlAutoPrint.Location = new System.Drawing.Point(318, 131);
             this.ddlAutoPrint.Name = "ddlAutoPrint";
             this.ddlAutoPrint.Size = new System.Drawing.Size(131, 32);
             this.ddlAutoPrint.TabIndex = 37;
@@ -236,7 +238,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(272, 141);
+            this.label22.Location = new System.Drawing.Point(253, 141);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(59, 12);
             this.label22.TabIndex = 38;
@@ -245,11 +247,11 @@
             // btnAutoPrint
             // 
             this.btnAutoPrint.Font = new System.Drawing.Font("宋体", 18F);
-            this.btnAutoPrint.Location = new System.Drawing.Point(559, 131);
+            this.btnAutoPrint.Location = new System.Drawing.Point(537, 131);
             this.btnAutoPrint.Name = "btnAutoPrint";
-            this.btnAutoPrint.Size = new System.Drawing.Size(142, 34);
+            this.btnAutoPrint.Size = new System.Drawing.Size(164, 34);
             this.btnAutoPrint.TabIndex = 39;
-            this.btnAutoPrint.Text = "自动打印";
+            this.btnAutoPrint.Text = "启动自动打印";
             this.btnAutoPrint.UseVisualStyleBackColor = true;
             this.btnAutoPrint.Click += new System.EventHandler(this.btnAutoPrint_Click);
             // 
@@ -393,8 +395,6 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvData.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvData.Location = new System.Drawing.Point(3, 218);
-            this.dgvData.MergeColumnHeaderBackColor = System.Drawing.SystemColors.Control;
-            this.dgvData.MergeColumnNames = null;
             this.dgvData.Name = "dgvData";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
@@ -409,7 +409,7 @@
             this.dgvData.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvData.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dgvData.RowTemplate.Height = 55;
-            this.dgvData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvData.Size = new System.Drawing.Size(831, 419);
             this.dgvData.TabIndex = 7;
             this.dgvData.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvData_CellContentClick);
@@ -464,11 +464,20 @@
             // 
             this.sendOrderBindingSource.DataSource = typeof(Deliver.SendOrder);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(493, 141);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(0, 12);
+            this.label4.TabIndex = 50;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(840, 688);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtDown);
             this.Controls.Add(this.txtTop);
@@ -512,7 +521,7 @@
 
         #endregion
 
-        private RowMergeView dgvData;
+        private System.Windows.Forms.DataGridView dgvData;
         private System.Windows.Forms.ComboBox ddlPageSize;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox ddlPrinter;
@@ -549,6 +558,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colcname;
         private System.Windows.Forms.DataGridViewTextBoxColumn colisprinted;
         private System.Windows.Forms.DataGridViewButtonColumn colaction;
+        private System.Windows.Forms.Label label4;
     }
 }
 

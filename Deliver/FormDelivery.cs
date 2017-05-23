@@ -23,12 +23,12 @@ namespace Deliver
         OrderInfoResult orderinfo;
         string printType, deliveName, sName, lName, tel, printModel, imgPath;
         ReportClass rpt;
+        int id;
 
         public FormDelivery(ReportClass rpt, int id, string printType, string deliveName, string sName, string lName, string tel, string printModel, string imgPath)
         {
             InitializeComponent();
-            StartPosition = FormStartPosition.CenterParent;
-            InitInfo(id);
+            StartPosition = FormStartPosition.CenterParent;            
             this.printType = printType;
             this.sName = sName;
             this.deliveName = deliveName;
@@ -37,6 +37,8 @@ namespace Deliver
             this.rpt = rpt;
             this.printModel = printModel;
             this.imgPath = imgPath;
+            //InitInfo(id);
+            this.id = id;
         }
 
         private void InitInfo(int id)
@@ -60,28 +62,77 @@ namespace Deliver
                 else
                 {
                     orderProductBindingSource.DataSource = value;
-                    dgvData.Refresh();
 
                     foreach (DataGridViewRow row in dgvData.Rows)
                     {
-                        if (!string.IsNullOrWhiteSpace(row.Cells[colbalance_color.Name].Value.ToString()))
+                        var val = row.Cells[colbalance_color.Name].Value.ToString();
+                        if (!string.IsNullOrWhiteSpace(val))
                         {
-                            var val = row.Cells[colbalance_color.Name].Value.ToString();
                             if (val == "1")
                             {
                                 row.Cells[colbalance.Name].Style.BackColor = Color.Red;
                             }
                         }
                     }
+                    dgvData.Refresh();
                 }
             }
+        }
+
+        private List<SearchData> SearchDatas
+        {
+            get { return searchDataBindingSource.DataSource as List<SearchData>; }
+            set
+            {
+                if (value == null)
+                {
+                    searchDataBindingSource.Clear();
+                }
+                else
+                {
+                    searchDataBindingSource.DataSource = value;
+                    dgvData.Refresh();
+                }
+            }
+        }
+
+        private SearchData CurrentSearchData
+        {
+            get { return (SearchData)searchDataBindingSource.Current; }                                 
         }
 
         private OrderInfoResult OrderInfo(int id)
         {
             var postdata = string.Format("token={0}&sessionId={1}&id={2}", token, User.SessionID, id);
             var htmlstr = Html.Post(str_api + str_OrderInfo, postdata);
-            return JsonConvert.DeserializeObject<OrderInfoResult>(htmlstr);
+            var result = JsonConvert.DeserializeObject<OrderInfoResult>(htmlstr);
+            int i = 1;
+            result.Data.product_list.ForEach(f => f.index = i++);
+            return result;
+        }
+
+        private void FormDelivery_Load(object sender, EventArgs e)
+        {
+            InitInfo(id);
+        }
+
+        private void dgvProduct_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            txtID.Text = CurrentSearchData.id.ToString();
+            txtPrice.Text = CurrentSearchData.rank_price.ToString();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            OrderEdit();
+        }
+
+        private void FormDelivery_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            OrderEdit();
         }
 
         private void OrderEdit()
@@ -166,14 +217,7 @@ namespace Deliver
 
         private void button2_Click(object sender, EventArgs e)
         {
-            DataVerifier dv = new DataVerifier();
-            dv.Check(string.IsNullOrWhiteSpace(txtPName.Text), "请输入商品名称");
-            if (dv.Pass)
-            {
-                var p = SearchProduct();
-                txtID.Text = p.Data[0].id.ToString();
-            }
-            dv.ShowMsgIfFailed();
+            SearchDatas = SearchProduct().Data;
         }
     }
 

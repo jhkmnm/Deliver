@@ -38,6 +38,15 @@
             this.lblCName = new System.Windows.Forms.Label();
             this.lblTime = new System.Windows.Forms.Label();
             this.dgvData = new System.Windows.Forms.DataGridView();
+            this.colid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colnum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colreal_num = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colunit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colprice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.coltotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colbalance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colbalance_color = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.orderProductBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lblTotal = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -53,20 +62,20 @@
             this.label20 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dgvProduct = new System.Windows.Forms.DataGridView();
+            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.rankpriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.searchDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.button2 = new System.Windows.Forms.Button();
             this.txtPName = new System.Windows.Forms.TextBox();
-            this.colid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colname = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colnum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colreal_num = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colunit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colprice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.coltotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colbalance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colbalance_color = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderProductBindingSource)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.searchDataBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -161,188 +170,14 @@
             this.dgvData.RowTemplate.DefaultCellStyle.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dgvData.RowTemplate.Height = 55;
             this.dgvData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvData.Size = new System.Drawing.Size(834, 422);
+            this.dgvData.Size = new System.Drawing.Size(834, 295);
             this.dgvData.TabIndex = 8;
-            // 
-            // orderProductBindingSource
-            // 
-            this.orderProductBindingSource.DataSource = typeof(Deliver.OrderProduct);
-            // 
-            // lblTotal
-            // 
-            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTotal.AutoSize = true;
-            this.lblTotal.Font = new System.Drawing.Font("宋体", 18F);
-            this.lblTotal.Location = new System.Drawing.Point(90, 512);
-            this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(82, 24);
-            this.lblTotal.TabIndex = 10;
-            this.lblTotal.Text = "label5";
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("宋体", 18F);
-            this.label6.Location = new System.Drawing.Point(14, 512);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(70, 24);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "总计:";
-            // 
-            // btnAutoPrint
-            // 
-            this.btnAutoPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAutoPrint.Font = new System.Drawing.Font("宋体", 18F);
-            this.btnAutoPrint.Location = new System.Drawing.Point(686, 507);
-            this.btnAutoPrint.Name = "btnAutoPrint";
-            this.btnAutoPrint.Size = new System.Drawing.Size(142, 34);
-            this.btnAutoPrint.TabIndex = 40;
-            this.btnAutoPrint.Text = "保存打印";
-            this.btnAutoPrint.UseVisualStyleBackColor = true;
-            this.btnAutoPrint.Click += new System.EventHandler(this.btnAutoPrint_Click);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("宋体", 18F);
-            this.label7.Location = new System.Drawing.Point(326, 36);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(94, 24);
-            this.label7.TabIndex = 41;
-            this.label7.Text = "商品ID:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("宋体", 18F);
-            this.label8.Location = new System.Drawing.Point(326, 78);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(94, 24);
-            this.label8.TabIndex = 42;
-            this.label8.Text = "拍单量:";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("宋体", 18F);
-            this.label9.Location = new System.Drawing.Point(521, 36);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(118, 24);
-            this.label9.TabIndex = 43;
-            this.label9.Text = "实配数量:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("宋体", 18F);
-            this.label10.Location = new System.Drawing.Point(569, 77);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(70, 24);
-            this.label10.TabIndex = 44;
-            this.label10.Text = "单价:";
-            // 
-            // txtID
-            // 
-            this.txtID.Font = new System.Drawing.Font("宋体", 18F);
-            this.txtID.Location = new System.Drawing.Point(426, 33);
-            this.txtID.Name = "txtID";
-            this.txtID.ReadOnly = true;
-            this.txtID.Size = new System.Drawing.Size(90, 35);
-            this.txtID.TabIndex = 45;
-            // 
-            // txtNum
-            // 
-            this.txtNum.Font = new System.Drawing.Font("宋体", 18F);
-            this.txtNum.Location = new System.Drawing.Point(426, 74);
-            this.txtNum.Name = "txtNum";
-            this.txtNum.Size = new System.Drawing.Size(90, 35);
-            this.txtNum.TabIndex = 46;
-            // 
-            // txtReaNum
-            // 
-            this.txtReaNum.Font = new System.Drawing.Font("宋体", 18F);
-            this.txtReaNum.Location = new System.Drawing.Point(645, 33);
-            this.txtReaNum.Name = "txtReaNum";
-            this.txtReaNum.Size = new System.Drawing.Size(90, 35);
-            this.txtReaNum.TabIndex = 47;
-            // 
-            // txtPrice
-            // 
-            this.txtPrice.Font = new System.Drawing.Font("宋体", 18F);
-            this.txtPrice.Location = new System.Drawing.Point(645, 74);
-            this.txtPrice.Name = "txtPrice";
-            this.txtPrice.Size = new System.Drawing.Size(90, 35);
-            this.txtPrice.TabIndex = 48;
-            // 
-            // label20
-            // 
-            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label20.BackColor = System.Drawing.Color.Black;
-            this.label20.Location = new System.Drawing.Point(9, 546);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(820, 1);
-            this.label20.TabIndex = 49;
-            this.label20.Text = "label20";
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("宋体", 18F);
-            this.button1.Location = new System.Drawing.Point(751, 47);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(72, 44);
-            this.button1.TabIndex = 50;
-            this.button1.Text = "增加";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.txtPName);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.txtPrice);
-            this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Controls.Add(this.txtReaNum);
-            this.groupBox1.Controls.Add(this.txtID);
-            this.groupBox1.Controls.Add(this.txtNum);
-            this.groupBox1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox1.Location = new System.Drawing.Point(3, 550);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(834, 136);
-            this.groupBox1.TabIndex = 51;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "增加商品";
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("宋体", 18F);
-            this.button2.Location = new System.Drawing.Point(15, 86);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(72, 44);
-            this.button2.TabIndex = 52;
-            this.button2.Text = "搜索";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // txtPName
-            // 
-            this.txtPName.Font = new System.Drawing.Font("宋体", 18F);
-            this.txtPName.Location = new System.Drawing.Point(15, 33);
-            this.txtPName.Name = "txtPName";
-            this.txtPName.Size = new System.Drawing.Size(287, 35);
-            this.txtPName.TabIndex = 51;
             // 
             // colid
             // 
-            this.colid.DataPropertyName = "id";
+            this.colid.DataPropertyName = "index";
             this.colid.HeaderText = "序号";
             this.colid.Name = "colid";
-            this.colid.ReadOnly = true;
             this.colid.Width = 55;
             // 
             // colname
@@ -401,11 +236,252 @@
             this.colbalance_color.ReadOnly = true;
             this.colbalance_color.Visible = false;
             // 
+            // orderProductBindingSource
+            // 
+            this.orderProductBindingSource.DataSource = typeof(Deliver.OrderProduct);
+            // 
+            // lblTotal
+            // 
+            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTotal.AutoSize = true;
+            this.lblTotal.Font = new System.Drawing.Font("宋体", 18F);
+            this.lblTotal.Location = new System.Drawing.Point(90, 385);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(82, 24);
+            this.lblTotal.TabIndex = 10;
+            this.lblTotal.Text = "label5";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("宋体", 18F);
+            this.label6.Location = new System.Drawing.Point(14, 385);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(70, 24);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "总计:";
+            // 
+            // btnAutoPrint
+            // 
+            this.btnAutoPrint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnAutoPrint.Font = new System.Drawing.Font("宋体", 18F);
+            this.btnAutoPrint.Location = new System.Drawing.Point(738, 380);
+            this.btnAutoPrint.Name = "btnAutoPrint";
+            this.btnAutoPrint.Size = new System.Drawing.Size(90, 34);
+            this.btnAutoPrint.TabIndex = 40;
+            this.btnAutoPrint.Text = "打印";
+            this.btnAutoPrint.UseVisualStyleBackColor = true;
+            this.btnAutoPrint.Click += new System.EventHandler(this.btnAutoPrint_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("宋体", 18F);
+            this.label7.Location = new System.Drawing.Point(32, 93);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(94, 24);
+            this.label7.TabIndex = 41;
+            this.label7.Text = "商品ID:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("宋体", 18F);
+            this.label8.Location = new System.Drawing.Point(32, 135);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(94, 24);
+            this.label8.TabIndex = 42;
+            this.label8.Text = "拍单量:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("宋体", 18F);
+            this.label9.Location = new System.Drawing.Point(8, 178);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(118, 24);
+            this.label9.TabIndex = 43;
+            this.label9.Text = "实配数量:";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("宋体", 18F);
+            this.label10.Location = new System.Drawing.Point(56, 219);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(70, 24);
+            this.label10.TabIndex = 44;
+            this.label10.Text = "单价:";
+            // 
+            // txtID
+            // 
+            this.txtID.Font = new System.Drawing.Font("宋体", 18F);
+            this.txtID.Location = new System.Drawing.Point(132, 90);
+            this.txtID.Name = "txtID";
+            this.txtID.ReadOnly = true;
+            this.txtID.Size = new System.Drawing.Size(90, 35);
+            this.txtID.TabIndex = 45;
+            // 
+            // txtNum
+            // 
+            this.txtNum.Font = new System.Drawing.Font("宋体", 18F);
+            this.txtNum.Location = new System.Drawing.Point(132, 131);
+            this.txtNum.Name = "txtNum";
+            this.txtNum.Size = new System.Drawing.Size(90, 35);
+            this.txtNum.TabIndex = 46;
+            // 
+            // txtReaNum
+            // 
+            this.txtReaNum.Font = new System.Drawing.Font("宋体", 18F);
+            this.txtReaNum.Location = new System.Drawing.Point(132, 175);
+            this.txtReaNum.Name = "txtReaNum";
+            this.txtReaNum.Size = new System.Drawing.Size(90, 35);
+            this.txtReaNum.TabIndex = 47;
+            // 
+            // txtPrice
+            // 
+            this.txtPrice.Font = new System.Drawing.Font("宋体", 18F);
+            this.txtPrice.Location = new System.Drawing.Point(132, 216);
+            this.txtPrice.Name = "txtPrice";
+            this.txtPrice.Size = new System.Drawing.Size(90, 35);
+            this.txtPrice.TabIndex = 48;
+            // 
+            // label20
+            // 
+            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label20.BackColor = System.Drawing.Color.Black;
+            this.label20.Location = new System.Drawing.Point(9, 418);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(820, 1);
+            this.label20.TabIndex = 49;
+            this.label20.Text = "label20";
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("宋体", 18F);
+            this.button1.Location = new System.Drawing.Point(238, 189);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(72, 44);
+            this.button1.TabIndex = 50;
+            this.button1.Text = "增加";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.dgvProduct);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.txtPName);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.txtPrice);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.txtReaNum);
+            this.groupBox1.Controls.Add(this.txtID);
+            this.groupBox1.Controls.Add(this.txtNum);
+            this.groupBox1.Font = new System.Drawing.Font("宋体", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.groupBox1.Location = new System.Drawing.Point(3, 427);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(834, 259);
+            this.groupBox1.TabIndex = 51;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "增加商品";
+            // 
+            // dgvProduct
+            // 
+            this.dgvProduct.AllowUserToAddRows = false;
+            this.dgvProduct.AllowUserToDeleteRows = false;
+            this.dgvProduct.AutoGenerateColumns = false;
+            this.dgvProduct.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvProduct.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idDataGridViewTextBoxColumn,
+            this.nameDataGridViewTextBoxColumn,
+            this.rankpriceDataGridViewTextBoxColumn,
+            this.timeDataGridViewTextBoxColumn});
+            this.dgvProduct.DataSource = this.searchDataBindingSource;
+            this.dgvProduct.Location = new System.Drawing.Point(326, 28);
+            this.dgvProduct.Name = "dgvProduct";
+            this.dgvProduct.ReadOnly = true;
+            this.dgvProduct.RowTemplate.Height = 23;
+            this.dgvProduct.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvProduct.Size = new System.Drawing.Size(502, 223);
+            this.dgvProduct.TabIndex = 53;
+            this.dgvProduct.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProduct_CellClick);
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            this.idDataGridViewTextBoxColumn.DataPropertyName = "id";
+            this.idDataGridViewTextBoxColumn.HeaderText = "商品id";
+            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            this.idDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "名称";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // rankpriceDataGridViewTextBoxColumn
+            // 
+            this.rankpriceDataGridViewTextBoxColumn.DataPropertyName = "rank_price";
+            this.rankpriceDataGridViewTextBoxColumn.HeaderText = "单价";
+            this.rankpriceDataGridViewTextBoxColumn.Name = "rankpriceDataGridViewTextBoxColumn";
+            this.rankpriceDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // timeDataGridViewTextBoxColumn
+            // 
+            this.timeDataGridViewTextBoxColumn.DataPropertyName = "time";
+            this.timeDataGridViewTextBoxColumn.HeaderText = "time";
+            this.timeDataGridViewTextBoxColumn.Name = "timeDataGridViewTextBoxColumn";
+            this.timeDataGridViewTextBoxColumn.ReadOnly = true;
+            this.timeDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // searchDataBindingSource
+            // 
+            this.searchDataBindingSource.DataSource = typeof(Deliver.SearchData);
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("宋体", 18F);
+            this.button2.Location = new System.Drawing.Point(248, 28);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(72, 44);
+            this.button2.TabIndex = 52;
+            this.button2.Text = "搜索";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // txtPName
+            // 
+            this.txtPName.Font = new System.Drawing.Font("宋体", 18F);
+            this.txtPName.Location = new System.Drawing.Point(15, 33);
+            this.txtPName.Name = "txtPName";
+            this.txtPName.Size = new System.Drawing.Size(227, 35);
+            this.txtPName.TabIndex = 51;
+            // 
+            // button3
+            // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button3.Font = new System.Drawing.Font("宋体", 18F);
+            this.button3.Location = new System.Drawing.Point(642, 380);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(90, 34);
+            this.button3.TabIndex = 52;
+            this.button3.Text = "保存";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // FormDelivery
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(840, 688);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.btnAutoPrint);
@@ -418,10 +494,14 @@
             this.Controls.Add(this.label1);
             this.Name = "FormDelivery";
             this.Text = "送货单";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormDelivery_FormClosing);
+            this.Load += new System.EventHandler(this.FormDelivery_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvData)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderProductBindingSource)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProduct)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.searchDataBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -460,5 +540,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn coltotal;
         private System.Windows.Forms.DataGridViewTextBoxColumn colbalance;
         private System.Windows.Forms.DataGridViewTextBoxColumn colbalance_color;
+        private System.Windows.Forms.DataGridView dgvProduct;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rankpriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn timeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.BindingSource searchDataBindingSource;
+        private System.Windows.Forms.Button button3;
     }
 }

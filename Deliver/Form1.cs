@@ -28,8 +28,15 @@ namespace Deliver
         ReportClass rpt;
         
         Thread thread;
+        Thread threadInitPrint;
         Printer print;
         //ILog logger;
+        string pagesize = "";
+        string autoprint = "";
+        string SendDate = "";
+        string Down = "";
+        string Top = "";
+        List<string> Printed = new List<string>();
 
         public Form1()
         {
@@ -39,12 +46,28 @@ namespace Deliver
             //logger = LogManager.GetLogger(typeof(Form1));
             
             LoadDevice();
+            btnAutoPrint.Enabled = true;
             //timer1.Interval = Convert.ToInt32(textBox1.Text) * 1000;
             LoadCount();
 
+            ucPagerEx1.PageChanged += ucPagerEx1_PageChanged;
+
             print = new Printer();
+            print.SendOrderEvent += Print_SendOrderEvent;
             thread = new Thread(print.LoopPrint);
             thread.Start();
+        }
+
+        private void Print_SendOrderEvent(string id)
+        {
+            foreach (DataGridViewRow row in dgvData.Rows)
+            {
+                if (row.Cells[coliD.Name].Value.ToString() == id)
+                {
+                    row.Cells[coliD.Name].Style.BackColor = Color.Red;
+                    break;
+                }
+            }
         }
 
         #region 初始化窗口
@@ -145,26 +168,40 @@ namespace Deliver
                 else
                 {
                     sendOrderBindingSource.DataSource = value;
-                    dgvData.Refresh();
 
                     foreach (DataGridViewRow row in dgvData.Rows)
-                    {                        
-                        if (!string.IsNullOrWhiteSpace(row.Cells[colisprinted.Name].Value.ToString()))
+                    {
+                        var isprint = row.Cells[colisprinted.Name].Value.ToString();
+                        if (!string.IsNullOrWhiteSpace(isprint))
                         {
-                            var val = row.Cells[colisprinted.Name].Value.ToString();
-                            if (val == "1")
+                            if (isprint == "1")
                             {
                                 row.Cells[coliD.Name].Style.BackColor = Color.Red;
                             }
                         }
+                        Printed = Read();
+                        var id = row.Cells[coliD.Name].Value.ToString();
+                        if (Printed.Any(a => a == id))
+                        {
+                            row.Cells[coliD.Name].Style.BackColor = Color.Red;
+                        }
+
+                        var orderinfo = OrderInfo(Convert.ToInt32(id));
+                        if(orderinfo.product_list.Any(w => Convert.ToDecimal(w.real_num) <= 0))
+                        {
+                            row.Cells[colcname.Name].Style.BackColor = Color.Yellow;
+                        }
+                        else if(orderinfo.product_list.Any(w => w.balance_color == 1))
+                        {
+                            row.Cells[colcname.Name].Style.BackColor = Color.Red;
+                        }
+                        else
+                        {
+                            row.Cells[colcname.Name].Style.BackColor = Color.Green;
+                        }
                     }
 
-                    foreach (DataGridViewRow row in dgvData.SelectedRows)
-                    {
-                        row.Selected = false;
-                    }
-                    if (dgvData.Rows.Count > 0)
-                        dgvData.Rows[0].Selected = true;
+                    dgvData.Refresh();
                 }
             }
         }
@@ -185,14 +222,17 @@ namespace Deliver
 
         private void LoadData(int page)
         {
+            SendDate = dtpSendDate.Checked ? dtpSendDate.Value.ToString("yyyy-MM-dd") : "";
+            Down = txtDown.Text;
+            Top = txtTop.Text;
             var orderdata = SearchSendOrderList(page);
             SendOrderDataList = orderdata.Data;
-            ucPagerEx1.InitPageInfo(orderdata.Page.Total, orderdata.Page.PageSize);            
+            ucPagerEx1.InitPageInfo(orderdata.Page.Total, orderdata.Page.PageSize);
         }
 
         private OrderDataResult SearchSendOrderList(int page)
         {
-            var postdata = string.Format("token={0}&sessionId={1}&send_date={2}&send_order_down={3}&send_order_top={4}&page={5}", token, User.SessionID, dtpSendDate.Checked ? dtpSendDate.Value.ToString("yyyy-MM-dd") : "", txtDown.Text, txtTop.Text, page);
+            var postdata = string.Format("token={0}&sessionId={1}&send_date={2}&send_order_down={3}&send_order_top={4}&page={5}", token, User.SessionID, SendDate, Down, Top, page);
             var htmlstr = Html.Post(str_api + str_SendOrderList, postdata);
             return JsonConvert.DeserializeObject<OrderDataResult>(htmlstr);
         }
@@ -321,6 +361,7 @@ namespace Deliver
             configuration.AppSettings.Settings["LinkMan"].Value = txtLinkMan.Text;
             configuration.AppSettings.Settings["Tel"].Value = txtTel.Text;
             configuration.AppSettings.Settings["Rembmber"].Value = chkRemember.Checked ? "True" : "False";
+            configuration.AppSettings.Settings["ImagePath"].Value = !string.IsNullOrWhiteSpace(pbCode.ImageLocation) ? AppDomain.CurrentDomain.BaseDirectory + "1.bmp":"";
             configuration.Save();
         }
 
@@ -332,44 +373,64 @@ namespace Deliver
                 txtAccount.Text = ConfigurationManager.AppSettings["Account"];
                 txtLinkMan.Text = ConfigurationManager.AppSettings["LinkMan"];
                 txtTel.Text = ConfigurationManager.AppSettings["Tel"];
-                chkRemember.Checked = true;
+                pbCode.ImageLocation = ConfigurationManager.AppSettings["ImagePath"];
+                chkRemember.Checked = true;                
             }
             txtSendName.Text = ConfigurationManager.AppSettings["SendName"];
         }
 
         private void btnAutoPrint_Click(object sender, EventArgs e)
         {
-            DataVerifier dv = new DataVerifier();
-            dv.Check(string.IsNullOrWhiteSpace(txtSendName.Text), "没有送货单名称");
-            dv.CheckIfBeforePass(string.IsNullOrWhiteSpace(txtAccount.Text), "没有收款账号");
-            dv.CheckIfBeforePass(string.IsNullOrWhiteSpace(txtLinkMan.Text), "没有联系人");
-
-            if (dv.Pass)
+            if(btnAutoPrint.Text.Contains("启动"))
             {
-                if (InitRpt())
-                {
-                    for (int i = 1; i <= ucPagerEx1.PageCount; i++)
-                    {
-                        List<SendOrder> orders;
-                        if (i == 1)
-                        {
-                            orders = SendOrderDataList;
-                        }
-                        else
-                        {
-                            var orderdata = SearchSendOrderList(i);
-                            orders = orderdata.Data;
-                        }
+                DataVerifier dv = new DataVerifier();
+                dv.Check(string.IsNullOrWhiteSpace(txtSendName.Text), "没有送货单名称");
+                dv.CheckIfBeforePass(string.IsNullOrWhiteSpace(txtAccount.Text), "没有收款账号");
+                dv.CheckIfBeforePass(string.IsNullOrWhiteSpace(txtLinkMan.Text), "没有联系人");
 
-                        foreach (var order in orders)
-                        {
-                            var printdata = new PrintData { FName = txtSendName.Text, SName = txtAccount.Text, LName = txtLinkMan.Text, Tel = txtTel.Text, Img = pbCode.ImageLocation, OrderData = OrderInfo(order.ID) };
-                            print.Enqueue(printdata, rpt, ddlPageSize.SelectedValue.ToString(), ddlAutoPrint.SelectedValue.ToString());
-                        }
+                if (dv.Pass)
+                {
+                    btnAutoPrint.Text = "暂停自动打印";
+                    pagesize = ddlPageSize.SelectedValue.ToString();
+                    autoprint = ddlAutoPrint.SelectedValue.ToString();
+                    if (InitRpt())
+                    {
+                        threadInitPrint = new Thread(InitPrintData);
+                        threadInitPrint.Start();
                     }
                 }
+                dv.ShowMsgIfFailed();
             }
-            dv.ShowMsgIfFailed();
+            else
+            {
+                btnAutoPrint.Text = "启动自动打印";
+                threadInitPrint.Abort();
+            }            
+        }
+
+        private void InitPrintData()
+        {
+            for (int i = 1; i <= ucPagerEx1.PageCount; i++)
+            {
+                List<SendOrder> orders;
+                if (i == 1)
+                {
+                    orders = SendOrderDataList;
+                }
+                else
+                {
+                    var orderdata = SearchSendOrderList(i);
+                    orders = orderdata.Data;
+                }
+
+                foreach (var order in orders.Where(w => !Printed.Contains(w.ID.ToString())))
+                {
+                    var printdata = new PrintData { FName = txtSendName.Text, SName = txtAccount.Text, LName = txtLinkMan.Text, Tel = txtTel.Text, Img = pbCode.ImageLocation, OrderData = OrderInfo(order.ID), IsCheck = true };
+                    print.Enqueue(printdata, rpt, pagesize, autoprint);
+                }
+            }
+
+            this.Invoke(new Action(() => { btnAutoPrint.Text = "启动自动打印"; }));
         }
 
         private void chkRemember_CheckedChanged(object sender, EventArgs e)
@@ -392,6 +453,8 @@ namespace Deliver
                         MessageBox.Show("请选择图片文件");
                     }                    
                     pbCode.ImageLocation = file.FileName;
+                    Bitmap bmp = new Bitmap(pbCode.ImageLocation);
+                    bmp.Save("1.bmp");
                 }
             }
         }
@@ -399,6 +462,35 @@ namespace Deliver
         private void ddlPrinter_SelectedIndexChanged(object sender, EventArgs e)
         {
             rpt = null;
+        }
+
+        void ucPagerEx1_PageChanged(object sender, EventArgs e)
+        {
+            LoadData(ucPagerEx1.PageIndex);
+        }
+
+        private void ddlPrintType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlPrintType.SelectedValue.ToString() == "A")
+                btnAutoPrint.Enabled = true;
+            else
+                btnAutoPrint.Enabled = false;
+        }       
+
+        private List<string> Read()
+        {
+            var ids = new List<string>();
+            if(File.Exists("id.txt"))
+            {
+                var sr = new StreamReader("id.txt", Encoding.Default);
+                var line = "";
+                while ((line = sr.ReadLine()) != null)
+                {
+                    ids.Add(line);
+                }
+                sr.Close();
+            }
+            return ids;
         }
     }
 
@@ -410,6 +502,14 @@ namespace Deliver
         ReportClass rpt;
         string printType;   //打印纸张
         string printModel;  //打印内容
+
+        public delegate void delsendorder(string id);
+        public event delsendorder SendOrderEvent;
+
+        public void SendResult(string id)
+        {
+            SendOrderEvent?.Invoke(id);
+        }
 
         public void Enqueue(PrintData aj, ReportClass rpt, string printType, string printModel)
         {
@@ -431,12 +531,9 @@ namespace Deliver
                     {
                         try
                         {
-                            if (printType == "A")
-                                Print(printData.Dequeue());
-                            else
-                                PrintB(printData.Dequeue());
+                            Print(printData.Dequeue());
                         }
-                        catch { }
+                        catch(Exception ex){ }
                     }
                 }
             }
@@ -448,13 +545,25 @@ namespace Deliver
             {
                 try
                 {
-                    if (printType == "A")
-                        Print(printData.Dequeue());
-                    else
-                        PrintB(printData.Dequeue());
+                    Print(printData.Dequeue());
                 }
-                catch { }
+                catch (Exception ex) { }
             }
+        }
+
+        private void Write(string id)
+        {
+            SendResult(id);
+            string path = "id.txt";
+            if (!File.Exists(path))
+            {
+                File.CreateText(path);                
+            }
+                
+
+            StreamWriter sw = new StreamWriter(path, true);
+            sw.WriteLine(id);
+            sw.Close();
         }
 
         #region 宽纸打印
@@ -487,8 +596,6 @@ namespace Deliver
                     new DataColumn("FName", typeof(string)),    //送货单名称
                     new DataColumn("CName", typeof(string)),    //客户名称
                     new DataColumn("DateTime", typeof(string)), //日期
-                    //new DataColumn("KName", typeof(string)),    //开单员
-                    //new DataColumn("SName", typeof(string)),    //收货员
                     new DataColumn("PName", typeof(string)),    //支付宝账号
                     new DataColumn("LName", typeof(string)), //联系人
                     new DataColumn("Img", typeof(string))
@@ -523,7 +630,24 @@ namespace Deliver
             rowA["LName"] = info.LName;
             rowA["Img"] = info.Img;
             printdata.Tables[0].Rows.Add(rowA);
-            var Data = info.OrderData.product_list.Where(w => (printModel == "A" && w.balance_color == 0) || (printModel == "B" && w.balance_color == 1));
+            var Data = new List<OrderProduct>();
+            if(info.IsCheck)
+            {
+                if (!info.OrderData.product_list.Any(w => Convert.ToDecimal(w.real_num) <= 0))
+                {
+                    if (printModel == "A" && !info.OrderData.product_list.Any(w => w.balance_color == 1))
+                        Data = info.OrderData.product_list;
+                    else if (printModel == "B" && info.OrderData.product_list.Any(w => w.balance_color == 1))
+                        Data = info.OrderData.product_list;
+                }
+            }
+            else
+            {
+                Data = info.OrderData.product_list;
+            }
+
+            if (Data.Count == 0)
+                return false;
 
             foreach(var item in Data)
             {
@@ -531,12 +655,15 @@ namespace Deliver
                 row["ID"] = item.index;
                 row["PName"] = item.name;
                 row["Num"] = item.num;
-                row["Weight"] = item.balance;
+                row["Weight"] = string.IsNullOrWhiteSpace(item.real_num) ? "0": item.real_num;
                 row["Unit"] = item.unit;
                 row["Price"] = item.price;
                 row["Total"] = item.total;
                 printdata.Tables[1].Rows.Add(row);
             }
+
+            Write(info.OrderData.id.ToString());
+
             return Print(printdata);
         }
         #endregion
@@ -578,7 +705,7 @@ namespace Deliver
                 {
                     sb.Append(good.name);
                 }
-                var weight = good.num.ToString();
+                var weight = good.real_num.ToString();
                 var price_padLeft = 18;
                 var price = good.price.ToString();
                 var total_padLeft = 15;
@@ -668,7 +795,6 @@ namespace Deliver
     }
 
     #region 实体
-    //public class Deliver
 
     public class Result
     {
@@ -726,6 +852,7 @@ namespace Deliver
 
     public class PrintData
     {
+        public bool IsCheck { get; set; }
         public string FName { get; set; }
         public string SName { get; set; }
         public string LName { get; set; }
